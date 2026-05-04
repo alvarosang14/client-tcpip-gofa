@@ -12,15 +12,21 @@ class Camera:
         self.port_camera = port_camera
 
         self.cap = cv2.VideoCapture(self.port_camera)
-        self.celesteBajo = np.array([85, 100, 20], np.uint8)
-        self.celesteAlto = np.array([125, 255, 255], np.uint8)
-        self.verdeBajo = np.array([40, 100, 20], np.uint8)
-        self.verdeAlto = np.array([80, 255, 255], np.uint8)
-        self.redBajo1 = np.array([0, 100, 20], np.uint8)
-        self.redAlto1 = np.array([10, 255, 255], np.uint8)
-        self.redBajo2 = np.array([170, 100, 20], np.uint8)
-        self.redAlto2 = np.array([179, 255, 255], np.uint8)
+        #self.celesteBajo = np.array([85, 100, 20], np.uint8)
+        #self.celesteAlto = np.array([125, 255, 255], np.uint8)
+        #self.redBajo1 = np.array([0, 100, 20], np.uint8)
+        #self.redAlto1 = np.array([10, 255, 255], np.uint8)
+        #self.redBajo2 = np.array([170, 100, 20], np.uint8)
+        #self.redAlto2 = np.array([179, 255, 255], np.uint8)
 
+        self.redBajo = np.array([0, 101, 153], np.uint8)
+        self.redAlto = np.array([179, 197, 235], np.uint8)
+
+        self.blancoBajo = np.array([103, 38, 195], np.uint8)
+        self.blancoAlto = np.array([118, 67, 255], np.uint8)
+
+        self.celesteBajo = np.array([95, 183, 180], np.uint8)
+        self.celesteAlto = np.array([105, 236, 253], np.uint8)
 
         self.font = cv2.FONT_HERSHEY_SIMPLEX
     
@@ -62,14 +68,12 @@ class Camera:
             if ret == True:
                 self.frame = frame
                 frameHSV = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+                maskBlanco = cv2.inRange(frameHSV, self.blancoBajo, self.blancoAlto)
                 maskCeleste = cv2.inRange(frameHSV, self.celesteBajo, self.celesteAlto)
-                maskVerde   = cv2.inRange(frameHSV, self.verdeBajo, self.verdeAlto)
-                maskRed1    = cv2.inRange(frameHSV, self.redBajo1, self.redAlto1)
-                maskRed2    = cv2.inRange(frameHSV, self.redBajo2, self.redAlto2)
-                maskRed     = cv2.add(maskRed1, maskRed2)
-                self.dibujar(maskCeleste, (255, 255,   0), 'B')
-                self.dibujar(maskVerde,   (  0, 255,   0), 'G')
-                self.dibujar(maskRed,     (  0,   0, 255), 'R')
+                maskRed    = cv2.inRange(frameHSV, self.redBajo, self.redAlto)
+                self.dibujar(maskBlanco,  (255, 255, 255), 'W')   # Blanco
+                self.dibujar(maskCeleste, (255, 255,   0), 'B')   # Celeste = azul
+                self.dibujar(maskRed,     (  0,   0, 255), 'R')   # Rojo
                 cv2.imshow('frame', self.frame)
 
             key = cv2.waitKey(30) & 0xFF

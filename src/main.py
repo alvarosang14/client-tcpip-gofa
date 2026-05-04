@@ -7,9 +7,9 @@ from gofa_socket.gofa_socket import GofaSocket
 class Engine:
     def __init__(self):
         #self.socket = GofaSocket()
-        #self.camera = Camera(self.socket)
+        #self.camera = Camera(self.socket, port_camera=3)
 
-        self.camera = Camera(None)
+        self.camera = Camera(None, port_camera=2)
 
     def run(self):
         self.camera.run()
