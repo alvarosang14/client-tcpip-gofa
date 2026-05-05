@@ -8,7 +8,7 @@ class Camera:
     def __init__(self, gofa_socket=None, port_camera=0):
         self.gofa_socket = gofa_socket
 
-        self.PIXELS_POR_MM = 16.43
+        self.PIXELS_POR_MM = 16.8
         self.port_camera = port_camera
 
         self.cap = cv2.VideoCapture(self.port_camera)
@@ -40,8 +40,8 @@ class Camera:
                 nuevoContorno = cv2.convexHull(c)
                 cv2.circle(self.frame, (x, y), 7, (0, 255, 0), -1)
 
-                x_mm = round(x / self.PIXELS_POR_MM, 1)
-                y_mm = round(y / self.PIXELS_POR_MM, 1)
+                x_mm = round(x / self.PIXELS_POR_MM, 1) * 10
+                y_mm = round(y / self.PIXELS_POR_MM, 1) * 10
 
                 cv2.putText(self.frame, '{:.1f}mm,{:.1f}mm'.format(x_mm, y_mm), 
                     (x + 10, y), self.font, 0.75, (0, 255, 0), 1, cv2.LINE_AA)
@@ -50,7 +50,9 @@ class Camera:
                 # No va a ver mas de tres digitos sino seria un metro
                 coorX = '{:04.1f}'.format(x_mm)
                 coorY = '{:04.1f}'.format(y_mm)
-                coordXY = label + coorX + coorY
+                #coordXY = label + coorX + coorY
+
+                coordXY = coorX + coorY
 
                 if self.gofa_socket:
                     self.gofa_socket.send_data(coordXY.encode())
