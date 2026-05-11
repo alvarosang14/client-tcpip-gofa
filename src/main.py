@@ -11,7 +11,7 @@ class Engine:
             self.socket = GofaSocket()
             self.camera = Camera(self.socket, port_camera=2)
         else:
-            self.camera = Camera(None, port_camera=0)
+            self.camera = Camera(None, port_camera=2)
 
     def run(self):
         self.camera.run()
